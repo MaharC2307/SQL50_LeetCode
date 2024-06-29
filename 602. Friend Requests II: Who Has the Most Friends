@@ -1,0 +1,10 @@
+with final_DF as (select requester_id as id,sum(c) as num from
+(select requester_id,count(*) as c  from RequestAccepted
+group by requester_id
+union all
+select accepter_id,count(*) as c  from RequestAccepted
+group by accepter_id) as cte
+group by requester_id
+)
+select * from final_DF
+where num = (select max(num) from final_DF)
