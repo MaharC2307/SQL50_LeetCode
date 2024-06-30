@@ -1,0 +1,8 @@
+select department,name as employee,salary from
+(select e.name as name,salary,d.name as department
+,dense_rank() over(partition by d.name order by salary desc) as ranking
+from employee e
+join department d
+on e.departmentid = d.id
+) as cte
+where ranking <=3
