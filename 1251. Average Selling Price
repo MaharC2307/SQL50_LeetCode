@@ -1,0 +1,10 @@
+with cte as(select p.product_id, coalesce(units*price,0) as tot_price, units
+from prices p
+left join unitssold u
+on p.product_id = u.product_id
+and purchase_date between start_date and end_date
+)
+select product_id,
+round(coalesce(sum(tot_price)/sum(units),0),2) as average_price 
+from cte
+group by product_id
