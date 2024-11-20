@@ -1,0 +1,6 @@
+with report as(select managerid,count(*) as no_of_report from employee
+group by managerid )
+select name from report r
+join employee e 
+on r.managerid = e.id
+where no_of_report >= 5
