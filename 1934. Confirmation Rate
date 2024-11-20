@@ -1,0 +1,10 @@
+with cte as(select user_id,
+count(*) as total_confirmation,
+count(case when action = 'confirmed' then 1 else null end) as confirmed_confirmation
+from confirmations
+group by user_id)
+select s.user_id,
+round(coalesce(confirmed_confirmation/total_confirmation,0),2) as confirmation_rate
+from cte 
+right join signups s
+on s.user_id = cte.user_id
