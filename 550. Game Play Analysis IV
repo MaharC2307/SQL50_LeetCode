@@ -1,0 +1,13 @@
+with cte as
+(select *,
+rank() over(partition by player_id order by event_date) as rank_d
+from activity) 
+select round((count(distinct c1.player_id)/(select count(distinct player_id) from activity)),2) as fraction
+from  cte c1
+join cte c2
+on c1.player_id = c2.player_id and
+c1.rank_d = 1 and
+c2.rank_d = 2
+where datediff(c2.event_date,c1.event_date) = 1
+
+
