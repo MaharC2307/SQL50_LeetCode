@@ -1,0 +1,6 @@
+select class
+from
+(select class, count(distinct student) as count
+from courses
+group by class) as cte
+where count >= 5
