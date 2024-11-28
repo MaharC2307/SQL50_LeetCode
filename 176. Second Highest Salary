@@ -1,0 +1,11 @@
+with cte as(select *,
+dense_rank() over(order by salary desc) as rd
+from employee
+)
+
+select distinct salary as secondhighestsalary
+from cte
+where rd = 2
+union all
+select null
+where not exists (select salary from cte where rd = 2)
